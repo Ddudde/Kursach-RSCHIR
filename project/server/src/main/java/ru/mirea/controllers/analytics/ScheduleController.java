@@ -25,7 +25,7 @@ import static java.util.Arrays.asList;
 @RestController
 @RequestMapping("/schedule")
 @NoArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.66:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.66:3000", "https://ddudde.github.io"})
 public class ScheduleController {
 
     @Autowired

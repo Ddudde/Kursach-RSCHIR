@@ -61,7 +61,7 @@ export function NewsPor() {
                                             <span className={newsCSS.date}>{newsInfo[type][param].date}</span>
                                             <div className={newsCSS.te}>
                                                 <span className={newsCSS.banner}>
-                                                    <img alt="banner" src={newsInfo[type][param].img_url + ''} onError={errorLoad}/>
+                                                    <img alt="banner" src={'/Kursach-RSCHIR'+newsInfo[type][param].img_url + ''} onError={errorLoad}/>
                                                 </span>
                                                 <pre className={newsCSS.field}>
                                                     {newsInfo[type][param].text}

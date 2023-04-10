@@ -48,7 +48,7 @@ function getLogin() {
     return (
         <div className={mainCSS.logBlock}>
             <div className={mainCSS.nav_i+' '+mainCSS.log} style={{width:"100%"}} id={mainCSS.nav_i}>
-                <img alt="ico" src={'/media/ls-icon'+ cState.ico +'.png'}/>
+                <img alt="ico" src={'/Kursach-RSCHIR/media/ls-icon'+ cState.ico +'.png'}/>
                 <div className={mainCSS.logLog}>{cState.login}</div>
                 <div className={mainCSS.logText}>Я - {cState.roleDesc}</div>
             </div>

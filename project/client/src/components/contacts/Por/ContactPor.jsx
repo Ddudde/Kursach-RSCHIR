@@ -67,7 +67,7 @@ export function ContactPor() {
                                             {contactsInfo[type].mapPr.text}
                                         </pre>
                                         <span className={contactCSS.banner}>
-                                            <img alt="banner" src={contactsInfo[type].mapPr.imgUrl+''} onError={errorLoad}/>
+                                            <img alt="banner" src={'/Kursach-RSCHIR'+contactsInfo[type].mapPr.imgUrl+''} onError={errorLoad}/>
                                         </span>
                                     </div>
                                 </section>
