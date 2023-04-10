@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Kursach-RSCHIR/static/css/main.0d2597e5.css",
-    "main.js": "/Kursach-RSCHIR/static/js/main.332a6baf.js",
+    "main.js": "/Kursach-RSCHIR/static/js/main.effcc740.js",
     "static/js/787.d8939b6a.chunk.js": "/Kursach-RSCHIR/static/js/787.d8939b6a.chunk.js",
     "static/media/izo5.png": "/Kursach-RSCHIR/static/media/izo5.d552df68cdc955905b80.png",
     "static/media/izo6.png": "/Kursach-RSCHIR/static/media/izo6.8b1ae17e2604c118f155.png",
@@ -60,11 +60,11 @@
     "static/media/profd.png": "/Kursach-RSCHIR/static/media/profd.b5e12f415ea64591df73.png",
     "index.html": "/Kursach-RSCHIR/index.html",
     "main.0d2597e5.css.map": "/Kursach-RSCHIR/static/css/main.0d2597e5.css.map",
-    "main.332a6baf.js.map": "/Kursach-RSCHIR/static/js/main.332a6baf.js.map",
+    "main.effcc740.js.map": "/Kursach-RSCHIR/static/js/main.effcc740.js.map",
     "787.d8939b6a.chunk.js.map": "/Kursach-RSCHIR/static/js/787.d8939b6a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0d2597e5.css",
-    "static/js/main.332a6baf.js"
+    "static/js/main.effcc740.js"
   ]
 }

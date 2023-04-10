@@ -72,7 +72,7 @@ export function getEdCon(info, inps, forceUpdate) {
                     {getEdField(telMFi, "Текст:", telM, "inpntt_m", info, inps, forceUpdate)}
                     {info[type].mapPr && info[type].mapPr.imgUrl ?
                             <span className={contactCSS.banner}>
-                                <img alt="banner" src={info[type].mapPr.imgUrl} onError={errLoadAddIm}/>
+                                <img alt="banner" src={'/Kursach-RSCHIR'+info[type].mapPr.imgUrl} onError={errLoadAddIm}/>
                                 <div className={contactCSS.upr}>
                                     <img className={contactCSS.imgfield} src={ed} onClick={(e)=>onEdit(e, inps, info)} title="Редактировать" alt=""/>
                                     <img className={contactCSS.imginp} style={{marginRight: "1vw"}} src={no} onClick={onDel} title="Удалить изображение" alt=""/>
