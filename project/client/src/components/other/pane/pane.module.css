@@ -1,13 +1,10 @@
 .panel{
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	height: 7vh;
 	display: grid;
-	place-items: center;
-	grid-template: auto/repeat(5,1fr);
-	justify-items: stretch;
+	/*place-items: center;*/
+	grid-template: 7vh/ auto;
+	/*justify-items: stretch;*/
 	position: relative;
 	margin-right: 0.5px;
 }
@@ -129,11 +126,11 @@
 .predBlock{
 	position: relative;
 	margin-inline: -0.5px;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	align-self: stretch;
 	width: 100%;
+    display: none;
 }
 
 .pred{

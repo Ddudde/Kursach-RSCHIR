@@ -92,7 +92,7 @@ export function send(bod, typeC, url, type) {
             body: bod
         });
     }
-    return fetch("http://192.168.1.66:8080/"+(url ? url : ""), sed)
+    return fetch("http://localhost:8080/"+(url ? url : ""), sed)
         .then(res => {
             if (!res.ok) {
                 throw new Error(
@@ -178,7 +178,7 @@ function badPing() {
 }
 
 function iniNet() {
-    eventSource = new EventSource('http://192.168.1.66:8080/auth/open-stream');
+    eventSource = new EventSource('http://localhost:8080/auth/open-stream');
     eventSource.onopen = e => {
         console.log('open');
     };
@@ -300,11 +300,11 @@ export function Main() {
         } : undefined,
         10: cState.auth && cState.role == 3 ? {
             nam: "Администрирование УО",
-            linke: "admYO"
+            linke: "/"
         } : undefined,
         11: cState.auth && cState.role == 4 ? {
             nam: "Заявки",
-            linke: "request"
+            linke: "/"
         } : undefined,
         12: cState.auth && cState.role < 2 ? {
             nam: "Дневник",
@@ -365,7 +365,7 @@ export function Main() {
             <div className={mainCSS.d}>
                 © 2023 ООО "Рога и Копыта" Все права защищены. Project on <a href="https://github.com/Ddudde/Kursach-RSCHIR" style={{color: "var(--cV2)"}}>github</a>.
             </div>
-            <img className={mainCSS.d1} src={up} title="Вверх" alt="" onClick={onTop} ref={(el)=>d1 = el}/>
+            <img className={mainCSS.d1} src={up} title="Вверх" alt="" onClick={onTop} ref={el=>d1 = el}/>
         </>
     )
 }
