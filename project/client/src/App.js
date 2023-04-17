@@ -29,13 +29,12 @@ import Settings from "./components/main/settings/Settings";
 import Tutor from "./components/tutor/Tutor";
 import Journal from "./components/prepjur/Journal";
 import Request from "./components/request/Request";
-import Redirect from "./store/reducers/main/Redirect";
+import Redirect from "./components/main/Redirect";
 
 function App() {
     const cState = useSelector(states);
     let indexComp;
-    if(!cState.auth)
-    {
+    if(!cState.auth) {
         indexComp = <Start/>;
     } else {
         if(cState.role < 2) indexComp = <Dnevnik/>;
@@ -45,8 +44,8 @@ function App() {
     }
     return (
       <Routes>
-          <Route path="/" element={<Redirect/>} />
-          <Route path="/Kursach-RSCHIR" element={<Main/>}>
+          <Route path="/" element={<Redirect/>}/>
+          <Route path="Kursach-RSCHIR" element={<Main/>}>
               <Route index element={indexComp}/>
               <Route path="news" element={<NewsMain/>}>
                   <Route index element={<NewsPor/>} />
@@ -58,7 +57,7 @@ function App() {
                   <Route path="por" element={<ContactPor/>} />
                   {(cState.auth && cState.role != 4) && <Route path="yo" element={<ContactYo/>} />}
               </Route>
-              {(cState.auth && (cState.role < 2 || cState.role == 3)) && <Route path={cState.role == 3 ? "/" : "analytics"} element={<AnalyticsMain/>}>
+              {(cState.auth && (cState.role < 2 || cState.role == 3)) && <Route path={cState.role == 3 ? "" : "analytics"} element={<AnalyticsMain/>}>
                   <Route index element={<Zvonki/>} />
                   <Route path="zvonki" element={<Zvonki/>} />
                   <Route path="periods" element={<Periods/>} />
@@ -83,6 +82,43 @@ function App() {
               <Route path="reauth/:code" element={<Start mod="rea"/>} />
               <Route path="*" element={<ErrFound/>} />
           </Route>
+          {/*<Route path="KursachRSCHIR" element={<Main/>}>*/}
+              {/*<Route index element={indexComp}/>*/}
+              {/*<Route path="news" element={<NewsMain/>}>*/}
+              {/*    <Route index element={<NewsPor/>} />*/}
+              {/*    <Route path="por" element={<NewsPor/>} />*/}
+              {/*    {(cState.auth && cState.role != 4) && <Route path="yo" element={<NewsYo/>} />}*/}
+              {/*</Route>*/}
+              {/*<Route path="contacts" element={<ContactMain/>}>*/}
+              {/*    <Route index element={<ContactPor/>} />*/}
+              {/*    <Route path="por" element={<ContactPor/>} />*/}
+              {/*    {(cState.auth && cState.role != 4) && <Route path="yo" element={<ContactYo/>} />}*/}
+              {/*</Route>*/}
+              {/*{(cState.auth && (cState.role < 2 || cState.role == 3)) && <Route path={cState.role == 3 ? "/" : "analytics"} element={<AnalyticsMain/>}>*/}
+              {/*    <Route index element={<Zvonki/>} />*/}
+              {/*    <Route path="zvonki" element={<Zvonki/>} />*/}
+              {/*    <Route path="periods" element={<Periods/>} />*/}
+              {/*    <Route path="schedule" element={<Schedule/>} />*/}
+              {/*    {(cState.auth && cState.role < 2) && <Route path="journal" element={<AnalyticsJournal/>} />}*/}
+              {/*    {(cState.auth && cState.role < 2) && <Route path="marks" element={<Marks/>} />}*/}
+              {/*</Route>}*/}
+              {/*<Route path="people" element={<PeopleMain/>}>*/}
+              {/*    <Route index element={<Admins/>} />*/}
+              {/*    {(cState.auth && (cState.role < 2 || cState.role == 3)) && <Route path="teachers" element={<Teachers/>} />}*/}
+              {/*    {cState.auth && <Route path="hteachers" element={<HTeachers/>} />}*/}
+              {/*    {(cState.auth && (cState.role == 0 || cState.role == 3)) && <Route path="class" element={<Classmates/>} />}*/}
+              {/*    {(cState.auth && (cState.role == 0 || cState.role == 3)) && <Route path="parents" element={<Parents/>} />}*/}
+              {/*    <Route path="admins" element={<Admins/>} />*/}
+              {/*</Route>*/}
+              {/*{(!cState.auth || cState.role < 4) && <Route path="tutor/:typ" element={<Tutor/>} />}*/}
+              {/*{cState.auth && <Route path="profiles" element={<Profile/>} />}*/}
+              {/*{(cState.auth && cState.role == 2) && <Route path="journal" element={<Journal/>} />}*/}
+              {/*<Route path="profiles/:log" element={<Profile/>} />*/}
+              {/*{cState.auth && <Route path="settings" element={<Settings/>} />}*/}
+              {/*<Route path="invite/:code" element={<Start mod="inv"/>} />*/}
+              {/*<Route path="reauth/:code" element={<Start mod="rea"/>} />*/}
+              {/*<Route path="*" element={<ErrFound/>} />*/}
+          {/*</Route>*/}
       </Routes>
     );
 }
