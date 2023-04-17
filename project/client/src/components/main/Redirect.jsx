@@ -16,6 +16,7 @@ export function Redirect() {
             isFirstUpdate.current = false;
             return;
         }
+        navigate("/Kursach-RSCHIR");
         console.log('componentDidUpdate Redirect.jsx');
     });
     return <></>
