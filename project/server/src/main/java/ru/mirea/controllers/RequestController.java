@@ -1,18 +1,13 @@
 package ru.mirea.controllers;
 
 import com.google.gson.JsonObject;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.mirea.data.SSE.TypesConnect;
 import ru.mirea.data.ServerService;
-import ru.mirea.data.models.Request;
+import ru.mirea.data.models.school.Request;
 import ru.mirea.data.models.auth.User;
-import ru.mirea.data.reps.RequestRepository;
-import ru.mirea.data.reps.auth.UserRepository;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/requests")

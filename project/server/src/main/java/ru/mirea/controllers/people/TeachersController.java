@@ -11,9 +11,8 @@ import ru.mirea.data.SSE.Subscriber;
 import ru.mirea.data.SSE.TypesConnect;
 import ru.mirea.data.ServerService;
 import ru.mirea.data.json.Role;
-import ru.mirea.data.models.Group;
-import ru.mirea.data.models.School;
-import ru.mirea.data.models.Subject;
+import ru.mirea.data.models.school.Group;
+import ru.mirea.data.models.school.School;
 import ru.mirea.data.models.auth.Invite;
 import ru.mirea.data.models.auth.User;
 

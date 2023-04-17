@@ -29,7 +29,7 @@ import Settings from "./components/main/settings/Settings";
 import Tutor from "./components/tutor/Tutor";
 import Journal from "./components/prepjur/Journal";
 import Request from "./components/request/Request";
-import Redirect from "./components/main/Redirect";
+import Redirect from "./store/reducers/main/Redirect";
 
 function App() {
     const cState = useSelector(states);
@@ -46,7 +46,7 @@ function App() {
     return (
       <Routes>
           <Route path="/" element={<Redirect/>} />
-          <Route path="Kursach-RSCHIR" element={<Main/>}>
+          <Route path="/Kursach-RSCHIR" element={<Main/>}>
               <Route index element={indexComp}/>
               <Route path="news" element={<NewsMain/>}>
                   <Route index element={<NewsPor/>} />

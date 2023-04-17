@@ -8,7 +8,7 @@ import ru.mirea.data.SSE.Subscriber;
 import ru.mirea.data.SSE.TypesConnect;
 import ru.mirea.data.ServerService;
 import ru.mirea.data.models.Contacts;
-import ru.mirea.data.models.School;
+import ru.mirea.data.models.school.School;
 import ru.mirea.data.models.Syst;
 import ru.mirea.data.models.auth.User;
 
