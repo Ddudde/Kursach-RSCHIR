@@ -5,10 +5,10 @@ export function Redirect() {
     const isFirstUpdate = useRef(true);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log("I was triggered during componentDidMount Redirect.jsx");
+        console.log("I was triggered during componentDidMount  Redirect.jsx");
         navigate("/Kursach-RSCHIR");
         return function() {
-            console.log("I was triggered1 during componentWillUnmount Redirect.jsx");
+            console.log("I was triggered during  componentWillUnmount Redirect.jsx");
         }
     }, []);
     useEffect(() => {
@@ -16,7 +16,6 @@ export function Redirect() {
             isFirstUpdate.current = false;
             return;
         }
-        navigate("/Kursach-RSCHIR");
         console.log('componentDidUpdate Redirect.jsx');
     });
     return <></>
