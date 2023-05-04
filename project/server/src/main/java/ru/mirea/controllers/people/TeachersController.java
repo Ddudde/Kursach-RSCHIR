@@ -4,27 +4,30 @@ import com.google.gson.JsonObject;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.mirea.Main;
 import ru.mirea.controllers.AuthController;
 import ru.mirea.data.SSE.Subscriber;
 import ru.mirea.data.SSE.TypesConnect;
-import ru.mirea.data.ServerService;
 import ru.mirea.data.json.Role;
-import ru.mirea.data.models.school.Group;
-import ru.mirea.data.models.school.School;
 import ru.mirea.data.models.auth.Invite;
 import ru.mirea.data.models.auth.User;
+import ru.mirea.data.models.school.Group;
+import ru.mirea.data.models.school.School;
+import ru.mirea.services.ServerService;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 
-@RestController
 @RequestMapping("/teachers")
 @NoArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.66:3000", "https://ddudde.github.io"})
-public class TeachersController {
+@RestController public class TeachersController {
 
     @Autowired
     private ServerService datas;
@@ -77,7 +80,6 @@ public class TeachersController {
                             put(2L, new Role(null, null, Long.parseLong(subscriber.getLvlSch())));
                         }}, Main.df.format(dateAfter));
                         datas.getInviteRepository().saveAndFlush(inv);
-                        if (school.getTeachersInv() == null) school.setTeachersInv(new ArrayList<>());
                         school.getTeachersInv().add(inv.getId());
                         datas.getSchoolRepository().saveAndFlush(school);
                     }

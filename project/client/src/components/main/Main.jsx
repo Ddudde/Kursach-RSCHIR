@@ -50,7 +50,7 @@ function getLogin() {
     return (
         <div className={mainCSS.logBlock}>
             <div className={mainCSS.nav_i+' '+mainCSS.log} style={{width:"100%"}} id={mainCSS.nav_i}>
-                <img alt="ico" src={prefSite + '/media/ls-icon'+ cState.ico +'.png'}/>
+                <img alt="ico" src={prefSite + '/static/media/ls-icon'+ cState.ico +'.png'}/>
                 <div className={mainCSS.logLog}>{cState.login}</div>
                 <div className={mainCSS.logText}>Я - {cState.roleDesc}</div>
             </div>
@@ -75,7 +75,7 @@ function getKids() {
             </div>
             <div className={mainCSS.logMenu}>
                 {Object.getOwnPropertyNames(cState.kids).map(param1 =>
-                    <div className={mainCSS.nav_i+' '+mainCSS.log+' '+mainCSS.kidBlock} id={mainCSS.nav_i} onClick={() => (dispatch(changeState(CHANGE_STATE, "kid", param1)))}>
+                    <div className={mainCSS.nav_i+' '+mainCSS.log+' '+mainCSS.kidBlock} id={mainCSS.nav_i} onClick={e => selKid(param1)}>
                         <img className={mainCSS.kidImg} src={themeInfo.theme_ch ? profd : profl} title="Перейти в профиль" alt=""/>
                         <div className={mainCSS.kidInf}>Информация о:</div>
                         <div className={mainCSS.kidText}>{cState.kids[param1]}</div>
@@ -83,6 +83,19 @@ function getKids() {
                 )}
             </div>
         </div>
+}
+
+function selKid(kid) {
+    send({
+        uuid: cState.uuid,
+        idL: kid
+    }, 'POST', "auth/chKid")
+        .then(data => {
+            if(data.error == false) {
+                console.log(data);
+                dispatch(changeState(CHANGE_STATE, "kid", data.kid));
+            }
+        });
 }
 
 export function send(bod, typeC, url, type) {
@@ -105,12 +118,12 @@ export function send(bod, typeC, url, type) {
             }
             return res.json();
         })
-        .catch(data => {return data});
+        .catch(data => data);
 }
 
 function chRoles() {
     send({
-        login: cState.login,
+        uuid: cState.uuid,
         role: cState.role
     }, 'POST', "auth/chRole")
         .then(data => {
@@ -123,12 +136,15 @@ function chRoles() {
 function onExit() {
     dispatch(changeState(CHANGE_STATE_RESET));
     send({
-        uuid: cState.uuid
+        uuid: cState.uuid,
+        notifToken: localStorage.getItem("notifToken")
     }, 'POST', "auth/exit");
 }
 
 export function setActived(name) {
-    if(document.querySelector(act)) document.querySelector(act).setAttribute('data-act', '0');
+    if(document.querySelector(act)) {
+        document.querySelector(act).setAttribute('data-act', '0');
+    }
     if(typeof name != "number"){
         if(document.querySelector(name)) {
             act = name;
@@ -188,8 +204,7 @@ function iniNet() {
         if (e.readyState == EventSource.CLOSED) {
             console.log('close');
             closeStream();
-        }
-        else {
+        } else {
             console.log('try to reconnect...');
         }
     };
@@ -200,8 +215,15 @@ function iniNet() {
         if(cState.login){
             send({
                 login: cState.login,
-                uuid: msg
-            }, 'POST', "auth/infCon");
+                uuid: msg,
+                notifToken: localStorage.getItem("notifToken"),
+                permis: Notification.permission == "granted"
+            }, 'POST', "auth/infCon")
+                .then(data => {
+                    if(data.error == false){
+                        dispatch(changeState(CHANGE_STATE_GL, undefined, data.body));
+                    }
+                });
         }
     }, false);
     eventSource.addEventListener('ping', e => {
@@ -363,7 +385,7 @@ export function Main() {
                 </div>
             </div>
             <div className={mainCSS.d}>
-                © 2023 ООО "Рога и Копыта" Все права защищены. Project on <a href="https://github.com/Ddudde/Kursach-RSCHIR" style={{color: "var(--cV2)"}}>github</a>.
+                © 2023 ООО "Рога и Копыта" Все права защищены. Project on <a href="https://github.com/Ddudde/DipvLom" style={{color: "var(--cV2)"}}>github</a>.
             </div>
             <img className={mainCSS.d1} src={up} title="Вверх" alt="" onClick={onTop} ref={el=>d1 = el}/>
         </>

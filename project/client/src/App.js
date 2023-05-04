@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Main from "./components/main/Main";
 import Start from "./components/start/Start.jsx";
 import NewsMain from "./components/news/NewsMain";
@@ -23,7 +23,7 @@ import HTeachers from "./components/people/hteachers/HTeachers";
 import Classmates from "./components/people/classmates/Classmates";
 import Parents from "./components/people/parents/Parents";
 import Admins from "./components/people/admins/Admins";
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import Profile from "./components/main/profile/Profile";
 import Settings from "./components/main/settings/Settings";
 import Tutor from "./components/tutor/Tutor";
@@ -33,7 +33,9 @@ import Redirect from "./components/main/Redirect";
 
 function App() {
     const cState = useSelector(states);
-    let indexComp;
+    const navigate = useNavigate();
+    const isFirstUpdate = useRef(true);
+    let indexComp, path;
     if(!cState.auth) {
         indexComp = <Start/>;
     } else {
@@ -42,8 +44,27 @@ function App() {
         if(cState.role == 3) indexComp = <AnalyticsMain comp={<Zvonki/>}/>;
         if(cState.role == 4) indexComp = <Request/>;
     }
-    return (
-      <Routes>
+    useEffect(() => {
+        console.log("I was triggered during componentDidMount App");
+        path = localStorage.getItem('path');
+        if(path) {
+            localStorage.removeItem('path');
+            console.log("path...");
+            console.log(path);
+            navigate(path);
+        }
+        return function() {
+            console.log("I was triggered during componentWillUnmount App")
+        }
+    }, []);
+    useEffect(() => {
+        if (isFirstUpdate.current) {
+            isFirstUpdate.current = false;
+            return;
+        }
+        console.log('componentDidUpdate App');
+    });
+    return <Routes>
           <Route path="/" element={<Redirect/>}/>
           <Route path="Kursach-RSCHIR" element={<Main/>}>
               <Route index element={indexComp}/>
@@ -78,12 +99,12 @@ function App() {
               {(cState.auth && cState.role == 2) && <Route path="journal" element={<Journal/>} />}
               <Route path="profiles/:log" element={<Profile/>} />
               {cState.auth && <Route path="settings" element={<Settings/>} />}
+              {(cState.auth && cState.role == 4) && <Route path="request" element={<Request/>} />}
               <Route path="invite/:code" element={<Start mod="inv"/>} />
               <Route path="reauth/:code" element={<Start mod="rea"/>} />
               <Route path="*" element={<ErrFound/>} />
           </Route>
-      </Routes>
-    );
+    </Routes>;
 }
 
 export default App;

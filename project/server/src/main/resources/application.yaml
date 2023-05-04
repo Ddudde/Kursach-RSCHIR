@@ -6,9 +6,6 @@ spring:
     useSSL: false
     characterEncoding: UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
-  mvc:
-    converters:
-      preferred-json: gson
   jpa:
     database: mysql
     database-platform: ru.mirea.data.LocalMysqlDialect

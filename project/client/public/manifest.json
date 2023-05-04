@@ -1,15 +1,32 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "/Kursach-RSCHIR/fav32.png",
-      "sizes": "32x32 24x24 16x16",
-      "type": "image/png"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+	"short_name": "Электронный журнал",
+	"name": "Электронный журнал",
+	"description": "Приложение 'Электронный журнал'. Продолжение следует...",
+	"icons": [
+		{
+			"src": "/Kursach-RSCHIR/static/media/fav32.png",
+			"sizes": "32x32",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/Kursach-RSCHIR/static/media/fav16.png",
+			"sizes": "16x16",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/Kursach-RSCHIR/static/media/fav512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"id": "/Kursach-RSCHIR/",
+	"scope": "/Kursach-RSCHIR/",
+	"start_url": "/Kursach-RSCHIR/",
+	"display": "minimal-ui",
+	"lang": "ru",
+	"dir": "ltr",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
 }

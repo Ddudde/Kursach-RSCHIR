@@ -1,11 +1,11 @@
 package ru.mirea.data.models.school;
 
 import lombok.*;
-import ru.mirea.data.converters.ListLongConverter;
-import ru.mirea.data.converters.MapLongConverter;
-import ru.mirea.data.json.Role;
+import ru.mirea.data.ListLongConverter;
+import ru.mirea.data.MapLongConverter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,27 +19,15 @@ import java.util.Map;
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
     @Convert(converter = ListLongConverter.class)
-    @Column(name = "kids")
-    private List<Long> kids;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "kidsInv")
-    private List<Long> kidsInv;
+    @Column(columnDefinition="TEXT")
+    private List<Long> kids, kidsInv;
 
     @Convert(converter = MapLongConverter.class)
-    @Column(name = "daysOfWeek")
+    @Column(columnDefinition="TEXT")
     private Map<Long, Long> daysOfWeek;
-
-    public Map<Long, Long> getDaysOfWeek() {
-        if(daysOfWeek == null) {
-            daysOfWeek = new HashMap<>();
-        }
-        return daysOfWeek;
-    }
 
     public Group(String name) {
         this.name = name;
@@ -54,5 +42,20 @@ import java.util.Map;
         this.name = name;
         this.kids = kids;
         this.daysOfWeek = daysOfWeek;
+    }
+
+    public Map<Long, Long> getDaysOfWeek() {
+        if(daysOfWeek == null) daysOfWeek = new HashMap<>();
+        return daysOfWeek;
+    }
+
+    public List<Long> getKids() {
+        if(kids == null) kids = new ArrayList<>();
+        return kids;
+    }
+
+    public List<Long> getKidsInv() {
+        if(kidsInv == null) kidsInv = new ArrayList<>();
+        return kidsInv;
     }
 }

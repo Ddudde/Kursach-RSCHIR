@@ -6,12 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 @ToString
 public class Role implements Serializable {
     private String email;
@@ -24,13 +20,6 @@ public class Role implements Serializable {
 
     private List<Long> parentsInv;
     private List<Long> subjects;
-
-    public List<Long> getSubjects() {
-        if(subjects == null) {
-            subjects = new ArrayList<>(asList());
-        }
-        return subjects;
-    }
 
     public Role(String email, Long YO, Long group, List<Long> parents) { // kid
         this.email = email;
@@ -58,5 +47,40 @@ public class Role implements Serializable {
 
     public Role(String email) { //adm
         this.email = email;
+    }
+
+    public List<Long> getSubjects() {
+        if(subjects == null) {
+            subjects = new ArrayList<>();
+        }
+        return subjects;
+    }
+
+    public List<Long> getKids() {
+        if(kids == null) {
+            kids = new ArrayList<>();
+        }
+        return kids;
+    }
+
+    public List<Long> getKidsInv() {
+        if(kidsInv == null) {
+            kidsInv = new ArrayList<>();
+        }
+        return kidsInv;
+    }
+
+    public List<Long> getParents() {
+        if(parents == null) {
+            parents = new ArrayList<>();
+        }
+        return parents;
+    }
+
+    public List<Long> getParentsInv() {
+        if(parentsInv == null) {
+            parentsInv = new ArrayList<>();
+        }
+        return parentsInv;
     }
 }

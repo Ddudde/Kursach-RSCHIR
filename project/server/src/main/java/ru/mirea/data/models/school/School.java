@@ -1,9 +1,10 @@
 package ru.mirea.data.models.school;
 
 import lombok.*;
-import ru.mirea.data.converters.ListLongConverter;
+import ru.mirea.data.ListLongConverter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -15,39 +16,14 @@ import java.util.List;
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
     @Convert(converter = ListLongConverter.class)
-    @Column(name = "hteachers")
-    private List<Long> hteachers;
+    @Column(columnDefinition="TEXT")
+    private List<Long> hteachers, hteachersInv, news, groups, teachers,
+        teachersInv, subjects;
 
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "hteachersInv")
-    private List<Long> hteachersInv;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "news")
-    private List<Long> news;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "groups")
-    private List<Long> groups;
-
-    @Column(name = "contacts")
     private Long contacts;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "teachers")
-    private List<Long> teachers;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "teachersInv")
-    private List<Long> teachersInv;
-
-    @Convert(converter = ListLongConverter.class)
-    @Column(name = "subjects")
-    private List<Long> subjects;
 
     public School(String name) {
         this.name = name;
@@ -83,5 +59,40 @@ import java.util.List;
         this.groups = groups;
         this.subjects = subjects;
         this.teachers = teachers;
+    }
+
+    public List<Long> getHteachers() {
+        if(hteachers == null) hteachers = new ArrayList<>();
+        return hteachers;
+    }
+
+    public List<Long> getHteachersInv() {
+        if(hteachersInv == null) hteachersInv = new ArrayList<>();
+        return hteachersInv;
+    }
+
+    public List<Long> getNews() {
+        if(news == null) news = new ArrayList<>();
+        return news;
+    }
+
+    public List<Long> getGroups() {
+        if(groups == null) groups = new ArrayList<>();
+        return groups;
+    }
+
+    public List<Long> getTeachers() {
+        if(teachers == null) teachers = new ArrayList<>();
+        return teachers;
+    }
+
+    public List<Long> getTeachersInv() {
+        if(teachersInv == null) teachersInv = new ArrayList<>();
+        return teachersInv;
+    }
+
+    public List<Long> getSubjects() {
+        if(subjects == null) subjects = new ArrayList<>();
+        return subjects;
     }
 }
