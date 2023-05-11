@@ -41,11 +41,11 @@
 
 .startimg{
 	position: absolute;
-	bottom: 10%;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
-	width: fit-content;
+	height: 20%;
 	cursor: pointer;
 	text-align: center;
 }
@@ -61,14 +61,23 @@
 .g{
 	position: relative;
 	cursor: pointer;
-	top: 10%;
-	left: 10%;
-	height: fit-content;
+	top: 5%;
+	max-width: 90%;
+	max-height: 75%;
+	margin-inline: auto;
+}
+
+.gH{
+	position: relative;
+	aspect-ratio: 16/9;
+	max-height: 100%;
 }
 
 .g_block{
 	position: relative;
 	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .g_block[data-act="0"]{
@@ -92,7 +101,7 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 50vh;
+	height: 100%;
 	pointer-events: none;
 	border-radius: 10px;
 	opacity: 0;
@@ -100,8 +109,8 @@
 }
 
 .pic_g{
-	height: 50vh;
-	aspect-ratio: 16/9;
+	width: 100%;
+	height: 100%;
 	border-radius: 10px;
 }
 
@@ -121,7 +130,7 @@
 	transform: rotate(180deg);
 }
 
-.g:hover > .pic_l, .g:hover > .pic_r, .g:hover > .g_block_shad{
+.gH:hover > .pic_l, .gH:hover > .pic_r, .gH:hover > .g_block_shad{
 	opacity: 1;
 }
 

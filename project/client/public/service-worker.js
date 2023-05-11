@@ -1,20 +1,20 @@
-let CACHE_NAME, urlsToCache, num, cacheWhitelist, prom, prefSite;
+let CACHE_NAME, urlsToCache, num, cacheWhitelist, prefSite, prom;
 
 // Name our cache
-CACHE_NAME = 'my-pwa-cache-v8';
+CACHE_NAME = 'my-pwa-cache-v4';
 
 cacheWhitelist = [CACHE_NAME];
 
 prefSite = "/Kursach-RSCHIR";
 
-function init() {
+async function init() {
     // num = 0;
     // setInterval(() => {
     //     console.log('tick', num);
     //     num++;
     // }, 2000);
     prom = fetch(prefSite + "/asset-manifest.json")
-        .then(response => response.json())
+        .then(resp => resp.json())
         .then(assets => {
             urlsToCache = [
                 prefSite + "/",
@@ -28,16 +28,6 @@ function init() {
                 urlsToCache.push(val);
             });
         });
-    if(this.registration.navigationPreload){
-        this.addEventListener("activate", e=>e.waitUntil(
-            this.registration.navigationPreload.getState()
-                .then(data => {
-                    if(!data.enabled) {
-                        return this.registration.navigationPreload.enable()
-                    }
-                })
-        ));
-    }
     this.addEventListener("activate", activateF);
     this.addEventListener('install', installF);
     this.addEventListener('fetch', fetchF);
@@ -55,10 +45,9 @@ function init() {
     });
     this.addEventListener('notificationclick', event => {
         console.log('On notification click: ', event.notification.data);
-        var url = prefSite + '/';
         event.notification.close();
         event.waitUntil(
-            this.clients.openWindow(url)
+            this.clients.openWindow(prefSite + '/')
         );
     });
 }
@@ -70,71 +59,80 @@ function messageF(e) {
 }
 
 function activateF(e) {
-    e.waitUntil(
-        caches.keys().then(keyList => Promise.all(keyList
-            .map(key => {
-                if (!cacheWhitelist.includes(key)) {
-                    console.log('Deleting cache: ' + key)
-                    return caches.delete(key);
+    try {
+        e.waitUntil((async () => {
+            if(this.registration.navigationPreload){
+                const data = await this.registration.navigationPreload.getState();
+                if(!data.enabled) {
+                    await this.registration.navigationPreload.enable()
                 }
-            })
-        ))
-    );
+            }
+            return caches.keys()
+                .then(keyList => Promise.all(keyList.map(key => {
+                    if (!cacheWhitelist.includes(key)) {
+                        console.log('Deleting cache: ' + key)
+                        return caches.delete(key);
+                    }
+                })));
+        }) ());
+    } catch (message) {
+        console.log(message)
+    }
 }
 
-function installF(e) {
-    this.skipWaiting();
-    e.waitUntil(caches.open(CACHE_NAME)
-        .then(cache => prom.then(e => cache.addAll(urlsToCache)
-            .then(r => {
-                console.log('cached...');
-                return r;
-            })
-            .catch(message => console.log(message))
-        ))
-    );
+async function installF(e) {
+    try {
+        await this.skipWaiting();
+        await prom;
+        e.waitUntil(caches.open(CACHE_NAME).then(cache => {
+            console.log('cached...');
+            urlsToCache.map(key => forCache(cache, key))
+        }));
+    } catch (message) {
+        console.log(message)
+    }
 }
 
 function setCache(url) {
-    console.log('try cache res');
-    return caches.open(CACHE_NAME)
-        .then(cache => cache.add(url)
-            .then(r => r || fetch(url)
-                .then(req => {
-                    console.log("fetch!");
-                    return req;
-                })
-                .catch(message => console.log(message))
-            )
-            .catch(message => console.log(message))
+    try {
+        console.log('try cache res');
+        return caches.open(CACHE_NAME)
+            .then(cache => forCache(cache, url))
+    } catch (message) {
+        console.log(message)
+    }
+}
+
+function forCache(cache, url) {
+    return cache.add(url)
+        .then(r => r || fetch(url)
+            .then(req => {
+                console.log("fetch!");
+                return req;
+            })
         )
 }
 
 function fetchF(e) {
     if(e.request.destination == '') return;
-    e.respondWith(caches.match(e.request)
-        .then(responseCache => {
-            console.log(responseCache);
-            if(responseCache) {
-                return responseCache;
-            } else {
-                if(e.preloadResponse) {
-                    return e.preloadResponse
-                        .then(responsePre => responsePre
-                            || setCache(e.request.url))
-                        .catch(message => {
-                            console.log(message);
-                            if(e.request.destination == 'document') {
-                                console.log("setIndexDoc...")
-                                return caches.match(prefSite + "/")
-                                    .then(responseCache => responseCache)
-                            }
-                        });
+    e.respondWith((async () => {
+        const responseCache = await caches.match(e.request)
+        console.log(responseCache);
+        if(responseCache) {
+            return responseCache;
+        } else {
+            try {
+                const responsePre = await e.preloadResponse;
+                return responsePre || setCache(e.request.url);
+            } catch (message) {
+                console.log(message);
+                if (e.request.destination == 'document') {
+                    console.log("setIndexDoc...")
+                    return caches.match(prefSite + "/");
                 }
-                return setCache(e.request.url);
             }
-        })
-    );
+        }
+    }) ());
 }
 
 init();

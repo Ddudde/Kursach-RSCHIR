@@ -19,6 +19,12 @@
 			"src": "/Kursach-RSCHIR/static/media/fav512.png",
 			"sizes": "512x512",
 			"type": "image/png"
+		},
+		{
+			"src": "/Kursach-RSCHIR/static/media/fav32.png",
+			"sizes": "32x32",
+			"type": "image/png",
+			"purpose": "maskable"
 		}
 	],
 	"id": "/Kursach-RSCHIR/",
