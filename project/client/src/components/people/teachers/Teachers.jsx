@@ -3,10 +3,21 @@ import {Helmet} from "react-helmet-async";
 import peopleCSS from "../peopleMain.module.css";
 import {states, teachers, themes} from "../../../store/selector";
 import {useDispatch, useSelector} from "react-redux";
-import {chStatB, copyLink, ele, onClose, onDel, onEdit, onFin, refreshLink, setActNew, sit} from "../PeopleMain";
+import {
+    chStatB,
+    copyLink,
+    ele,
+    goToProf,
+    onClose,
+    onDel,
+    onEdit,
+    onFin,
+    refreshLink,
+    setActNew,
+    sit
+} from "../PeopleMain";
 import profl from "../../../media/profl.png";
 import profd from "../../../media/profd.png";
-import {useNavigate} from "react-router-dom";
 import copyl from "../../../media/copyl.png";
 import copyd from "../../../media/copyd.png";
 import refreshCd from "../../../media/refreshCd.png";
@@ -26,7 +37,7 @@ import no from "../../../media/no.png";
 import ErrFound from "../../other/error/ErrFound";
 import {eventSource, send} from "../../main/Main";
 
-let dispatch, teachersInfo, navigate, cState, themeState, inps, errText;
+let dispatch, teachersInfo, cState, themeState, inps, errText;
 errText = "К сожалению, информация не найдена... Можете попробовать попросить завуча заполнить информацию.";
 inps = {inpnpt : "Фамилия И.О."};
 let [_, forceUpdate] = [];
@@ -63,7 +74,7 @@ function getTea(title, b, b1) {
                                 </div>
                             </div>
                         </div>
-                        {teachersInfo.nt && Object.getOwnPropertyNames(teachersInfo.nt.tea).map((param, i, xs, info = teachersInfo.nt.tea[param]) =>
+                        {teachersInfo.nt && Object.getOwnPropertyNames(teachersInfo.nt.tea).map((param, i, xs, info = teachersInfo.nt.tea[param], codeLink = info && info.link ? sit + (info.login ? "/reauth/" : "/invite/") + info.link : undefined) =>
                             <div className={peopleCSS.nav_iZag + " " + peopleCSS.nav_iZag1} key={param}>
                                 <div className={peopleCSS.pepl} data-st="0">
                                     <div className={peopleCSS.fi}>
@@ -73,7 +84,7 @@ function getTea(title, b, b1) {
                                         {info.login && <img className={peopleCSS.profIm} src={themeState.theme_ch ? profd : profl} onClick={e=>goToProf(info.login)} title="Так будет выглядеть иконка перехода в профиль" alt=""/>}
                                         <img className={peopleCSS.imgfield} src={ed} onClick={onEdit} title="Редактировать" alt=""/>
                                         <img className={peopleCSS.imginp} data-id={"nt_" + param} style={{marginRight: "1vw"}} src={no} onClick={(e)=>onDel(e, CHANGE_TEACHERS_DEL)} title="Удалить" alt=""/>
-                                        <input className={peopleCSS.inp+" "+peopleCSS.copyInp} data-id={"nt_" + param} id={"inpcpt_" + param} placeholder="Ссылка не создана" value={info.link ? sit + (info.login ? "/reauth/" : "/invite/") + info.link : undefined} type="text" readOnly/>
+                                        <input className={peopleCSS.inp+" "+peopleCSS.copyInp} data-id={"nt_" + param} id={"inpcpt_" + param} placeholder="Ссылка не создана" value={codeLink} type="text" readOnly/>
                                         <img className={peopleCSS.imginp+" "+peopleCSS.refrC} src={themeState.theme_ch ? refreshCd : refreshCl} onClick={(e)=>refreshLink(e, sit, CHANGE_TEACHERS)} title="Создать ссылку-приглашение" alt=""/>
                                         <img className={peopleCSS.imginp} src={themeState.theme_ch ? copyd : copyl} title="Копировать" data-enable={info.link ? "1" : "0"} onClick={(e)=>copyLink(e, info.link, info.name)} alt=""/>
                                     </div>
@@ -97,7 +108,7 @@ function getTea(title, b, b1) {
                             <div className={peopleCSS.nav_i} id={peopleCSS.nav_i}>
                                 {info.name}
                             </div>
-                            {Object.getOwnPropertyNames(info.tea).map((param1, i1, xs1, info1 = info.tea[param1]) =>
+                            {Object.getOwnPropertyNames(info.tea).map((param1, i1, xs1, info1 = info.tea[param1], codeLink = info1 && info1.link ? sit + (info1.login ? "/reauth/" : "/invite/") + info.tea[param1].link : undefined) =>
                                 b ?
                                     <div className={peopleCSS.pepl} key={param1} data-st="0">
                                         <div className={peopleCSS.fi}>
@@ -107,15 +118,15 @@ function getTea(title, b, b1) {
                                             {info1.login && <img className={peopleCSS.profIm} src={themeState.theme_ch ? profd : profl} onClick={e=>goToProf(info1.login)} title="Так будет выглядеть иконка перехода в профиль" alt=""/>}
                                             <img className={peopleCSS.imgfield} src={ed} onClick={onEdit} title="Редактировать" alt=""/>
                                             <img className={peopleCSS.imginp} data-id={param + "_" + param1} style={{marginRight: "1vw"}} src={no} onClick={(e)=>onDel(e, CHANGE_TEACHERS_DEL)} title="Удалить" alt=""/>
-                                            <input className={peopleCSS.inp+" "+peopleCSS.copyInp} data-id={param + "_" + param1} id={"inpcpt_" + param + "_" + param1} placeholder="Ссылка не создана" value={info1.link ? sit + (info1.login ? "/reauth/" : "/invite/") + info.tea[param1].link : undefined} type="text" readOnly/>
+                                            <input className={peopleCSS.inp+" "+peopleCSS.copyInp} data-id={param + "_" + param1} id={"inpcpt_" + param + "_" + param1} placeholder="Ссылка не создана" value={codeLink} type="text" readOnly/>
                                             <img className={peopleCSS.imginp+" "+peopleCSS.refrC} src={themeState.theme_ch ? refreshCd : refreshCl} onClick={(e)=>refreshLink(e, sit, CHANGE_TEACHERS)} title="Создать ссылку-приглашение" alt=""/>
-                                            <img className={peopleCSS.imginp} src={themeState.theme_ch ? copyd : copyl} title="Копировать" data-enable={info1.link ? "1" : "0"} onClick={(e)=>copyLink(e, info1.link, info1.name)} alt=""/>
+                                            <img className={peopleCSS.imginp} src={themeState.theme_ch ? copyd : copyl} title="Копировать" data-enable={info1.link ? "1" : "0"} onClick={e=>copyLink(e, info1.link, info1.name)} alt=""/>
                                         </div>
                                         <div className={peopleCSS.ed}>
                                             <div className={peopleCSS.preinf}>
                                                 ФИО:
                                             </div>
-                                            <input className={peopleCSS.inp} data-id={param + "_" + param1} id={"inpnpt_" + param + "_" + param1} placeholder={"Фамилия И.О."} defaultValue={info1.name} onChange={(e)=>chStatB(e, inps)} type="text"/>
+                                            <input className={peopleCSS.inp} data-id={param + "_" + param1} id={"inpnpt_" + param + "_" + param1} placeholder={"Фамилия И.О."} defaultValue={info1.name} onChange={e=>chStatB(e, inps)} type="text"/>
                                             {ele(false, "inpnpt_" + param + "_" + param1, inps)}
                                             <img className={peopleCSS.imginp+" yes "} src={yes} onClick={(e)=>onFin(e, inps, forceUpdate, CHANGE_TEACHERS)} title="Подтвердить" alt=""/>
                                             <img className={peopleCSS.imginp} style={{marginRight: "1vw"}} src={no} onClick={onClose} title="Отменить изменения и выйти из режима редактирования" alt=""/>
@@ -134,10 +145,6 @@ function getTea(title, b, b1) {
             }
         </div>
     );
-}
-
-function goToProf(log) {
-    if(log) navigate("/profiles/" + log);
 }
 
 function addTeaC(e) {
@@ -202,7 +209,6 @@ export function Teachers() {
     teachersInfo = useSelector(teachers);
     themeState = useSelector(themes);
     cState = useSelector(states);
-    navigate = useNavigate();
     if(!dispatch) {
         setActNew(0);
         if(eventSource.readyState == EventSource.OPEN) setInfo();

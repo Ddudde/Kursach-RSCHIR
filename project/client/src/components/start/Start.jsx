@@ -305,8 +305,7 @@ export function Start(props) {
         chStatZb({target: elem.logz});
         if(props.mod == "inv" && code){
             send({
-                code: code,
-                uuid: cState.uuid
+                code: code
             }, 'POST', "auth/checkInvCode")
                 .then(data => {
                     if(data.error == false){

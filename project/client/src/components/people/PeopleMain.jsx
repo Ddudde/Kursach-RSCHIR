@@ -1,10 +1,10 @@
 import React, {useEffect, useRef} from "react";
 import peopleCSS from './peopleMain.module.css';
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {groups, states} from "../../store/selector";
 import Pane from "../other/pane/Pane";
-import {eventSource, send, setActived} from "../main/Main";
+import {eventSource, prefSite, send, setActived} from "../main/Main";
 import {
     CHANGE_EVENT,
     CHANGE_GROUPS_DEL_GRS,
@@ -23,12 +23,12 @@ import parentsCSS from "./parents/parents.module.css";
 import {addKid, codPar} from "./parents/Parents";
 import {addTea, codTea} from "./teachers/Teachers";
 
-let gr, cState, dispatch, groupsInfo, evsIni;
+let gr, cState, dispatch, groupsInfo, evsIni, navigate;
 gr = {
     group: 0
 };
 
-export let sit = "http://localhost:3000";
+export let sit = window.location.origin;
 
 export function copyLink(e, link, name) {
     let title, text;
@@ -212,6 +212,10 @@ export function ele (x, par, inps) {
     if(!inps[par]) inps[par] = x;
 }
 
+export function goToProf(log) {
+    if(log) navigate(prefSite + "/profiles/" + log);
+}
+
 function remGroupC(e) {
     const msg = JSON.parse(e.data);
     dispatch(changeGroups(CHANGE_GROUPS_DEL_GRS, undefined, undefined, msg.id));
@@ -302,6 +306,7 @@ export function setEvGr(cS, dis) {
 export function PeopleMain() {
     cState = useSelector(states);
     groupsInfo = useSelector(groups);
+    navigate = useNavigate();
     if(!dispatch && cState.role > 1){
         if(eventSource.readyState == EventSource.OPEN) setGroups();
         eventSource.addEventListener('connect', onCon, false);

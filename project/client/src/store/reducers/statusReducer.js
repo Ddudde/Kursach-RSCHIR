@@ -6,7 +6,7 @@ const initialState = {
         // reaYes: false,
         // login: "nm13",
         // ico: 2,
-        // role: 2,
+        // role: 3,
         // uuid: "sdfds",
         // roles: true,
         // secFr: false,

@@ -89,7 +89,10 @@ import java.util.concurrent.ConcurrentHashMap;
     }
 
     public Subscriber getSubscriber(String uuid) {
-        return subscriptions.get(UUID.fromString(uuid));
+        if(!ObjectUtils.isEmpty(uuid)) {
+            return subscriptions.get(UUID.fromString(uuid));
+        }
+        return null;
     }
 
     public void infCon(String uuid, String login, TypesConnect type, String lvlSch, String lvlGr, String lvlMore1, String lvlMore2){
@@ -368,21 +371,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
     @PostMapping(value = "/checkInvCode")
     public JsonObject checkInvCode(@RequestBody DataAuth body) {
-        Subscriber subscriber = getSubscriber(body.uuid);
-        User user = datas.userByLogin(subscriber.getLogin());
         Invite inv = datas.inviteByCode(body.code);
         try {
             body.wrtr = datas.ini(body.toString());
-            if (user != null) {
-                user.getRoles().putAll(inv.getRole());
-                datas.getUserRepository().saveAndFlush(user);
-                School school = datas.schoolById(((Role) inv.getRole().values().toArray()[0]).getYO());
-                school.getHteachersInv().remove(inv.getId());
-                school.getHteachers().add(user.getId());
-                datas.getSchoolRepository().saveAndFlush(school);
-                datas.getInviteRepository().delete(inv);
-                body.wrtr.name("yes").value(true);
-            }
+            if(inv != null) body.wrtr.name("yes").value(true);
         } catch (Exception e) {body.bol = Main.excp(e);}
         return datas.getObj(ans -> {}, body.wrtr, body.bol);
     }

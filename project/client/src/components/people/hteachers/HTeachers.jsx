@@ -1,10 +1,9 @@
 import React, {useEffect, useReducer, useRef} from "react";
 import {Helmet} from "react-helmet-async";
-import {useNavigate} from "react-router-dom";
 import peopleCSS from '../peopleMain.module.css';
 import {hteachers, states, themes} from "../../../store/selector";
 import {useDispatch, useSelector} from "react-redux";
-import {ele, setActNew, sit} from "../PeopleMain";
+import {ele, goToProf, setActNew, sit} from "../PeopleMain";
 import profl from "../../../media/profl.png";
 import profd from "../../../media/profd.png";
 import ErrFound from "../../other/error/ErrFound";
@@ -30,7 +29,7 @@ import copyd from "../../../media/copyd.png";
 import copyl from "../../../media/copyl.png";
 import {eventSource, send} from "../../main/Main";
 
-let dispatch, errText, cState, inps, navigate, hteachersInfo, themeState, tps;
+let dispatch, errText, cState, inps, hteachersInfo, themeState, tps;
 errText = "К сожалению, информация не найдена... Можете попробовать попросить завуча заполнить информацию.";
 inps = {inpnpt : "Поле для ввода"};
 tps = {
@@ -205,10 +204,6 @@ function chStatB(e) {
     el.parentElement.querySelector(".yes").setAttribute("data-enable", +inps[el.id]);
 }
 
-function goToProf(log) {
-    if(log) navigate("/profiles/" + log);
-}
-
 function onCon(e) {
     setInfo();
 }
@@ -353,7 +348,10 @@ function setInfo() {
 }
 
 function getBlock(title, typ, x, b, info, x1) {
-    let edFi;
+    let edFi, codeLink;
+    if(info && info.link) {
+        codeLink = sit + (info.login ? "/reauth/" : "/invite/") + info.link;
+    }
     edFi = <div className={peopleCSS.pepl} style={{marginLeft: typ == "ht4L2" ? "2vw" : undefined}} key={x1 ? x1 : x} data-st="0">
         {b ?
             <div className={peopleCSS.fi}>
@@ -364,9 +362,9 @@ function getBlock(title, typ, x, b, info, x1) {
                 <img className={peopleCSS.imgfield} src={ed} onClick={onEdit} title="Редактировать" alt=""/>
                 <img className={peopleCSS.imginp} style={{marginRight: "1vw"}} src={no} onClick={onDel} title="Удалить" alt=""/>
                 {typ != "ht4" && <>
-                    <input className={peopleCSS.inp+" "+peopleCSS.copyInp} id={"inpcpt_" + x} placeholder="Ссылка не создана" defaultValue={info.link ? sit + (info.login ? "/reauth/" : "/invite/") + info.link : undefined} type="text" readOnly/>
+                    <input className={peopleCSS.inp+" "+peopleCSS.copyInp} id={"inpcpt_" + x} placeholder="Ссылка не создана" defaultValue={codeLink} type="text" readOnly/>
                     <img className={peopleCSS.imginp+" "+peopleCSS.refrC} src={themeState.theme_ch ? refreshCd : refreshCl} onClick={refreshLink} title="Создать ссылку-приглашение" alt=""/>
-                    <img className={peopleCSS.imginp} src={themeState.theme_ch ? copyd : copyl} title="Копировать" data-enable={info.link ? "1" : "0"} onClick={(e)=>copyLink(e, info.link ? sit + (info.login ? "/reauth/" : "/invite/") + info.link : undefined, info.name)} alt=""/>
+                    <img className={peopleCSS.imginp} src={themeState.theme_ch ? copyd : copyl} title="Копировать" data-enable={info.link ? "1" : "0"} onClick={(e)=>copyLink(e, codeLink, info.name)} alt=""/>
                 </>}
             </div>
             :
@@ -402,7 +400,6 @@ function getBlock(title, typ, x, b, info, x1) {
 export function HTeachers() {
     hteachersInfo = useSelector(hteachers);
     themeState = useSelector(themes);
-    navigate = useNavigate();
     cState = useSelector(states);
     if(!dispatch) {
         setActNew(1);
